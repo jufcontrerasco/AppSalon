@@ -43,59 +43,8 @@ const styles = StyleSheet.create({
   },
 });
 
-  var FBLoginButton = require('./FBLoginButton');
 
 export default class Login extends React.Component{
-
-  _fbAuth() {
-    var that = this;
-    LoginManager.logInWithReadPermissions(["public_profile",'email']).then(
-      function(result) {
-        if (result.isCancelled) {
-          console.log("Login cancelled");
-        } else {
-          console.log(
-            "Login success with permissions: " +
-              result.grantedPermissions.toString())
-
-              AccessToken.getCurrentAccessToken().then(
-                (data) => {
-                  let accessToken = data.accessToken;
-                  const responseInfoCallback = (error,result) =>{
-                    setTimeout(() =>{
-                      if(error){
-                        Alert.alert('Error' + error.toString());
-                      }
-                      else{
-                        if(result.email == undefined){
-                          Alert.alert('Error' + 'Email address is required');
-                        }else{
-                          Alert.alert('Error' + result.email);
-                        }
-                      }
-                    },200);
-
-                }
-                const infoRequest = new GraphRequest(
-                  '/me',
-                  {
-                    accessToken: accessToken,
-                    parameters:{
-                      fields:{
-                        string: 'email,name,first_name,middle_name,last_name'
-                      }
-                    }
-                  },
-                  responseInfoCallback
-                );
-                new GraphRequestManager().addRequest(infoRequest).start();
-              })
-        }
-      },
-      function(error) {
-        console.log("Login  ail with error: " + error);
-      })
-}
 
 
   render(){
@@ -137,8 +86,7 @@ export default class Login extends React.Component{
         </View>
 
         <View style={styles.accesos} >
-          <TouchableOpacity
-          onPress={this._fbAuth.bind(this)}>
+          <TouchableOpacity>
           <Text>Login FB</Text>
           </TouchableOpacity>
         </View>
